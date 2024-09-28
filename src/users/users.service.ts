@@ -48,14 +48,15 @@ export class UsersService {
     const userIndex = this.users.findIndex((user) => user.id === id);
     if (userIndex === -1) throw new NotFoundException('User not found');
 
-    const lastId = this.users[this.users.length - 1]?.id || 0;
+    const existingUser = this.users[userIndex];
+
     const updatedUser = {
-      id: lastId,
-      subscriptionDate: new Date().toISOString(),
+      ...existingUser,
       ...updateUserDto,
     };
 
-    this.users.push(updatedUser);
+    this.users[userIndex] = updatedUser;
+
     return updatedUser;
   }
 
